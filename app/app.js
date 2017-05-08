@@ -8,6 +8,8 @@ import VideoList from './components/video_list';
 import VideoDetail from './components/video_detail'
 const API_KEY =	"AIzaSyDbnAP4IAcak1BqG7-zcWbBh3_B2Trdvy4";
 
+require('style!css!sass!applicationStyles');
+
 class App extends React.Component {
 
   constructor(props) {
@@ -33,7 +35,7 @@ class App extends React.Component {
     const videoSearch = _.debounce((term) => { this.videoSearch(term) }, 300);
 
     return (
-      <div>
+      <div className="container">
         <SearchBar onSearchBar={ videoSearch }/>
         <VideoDetail video={ this.state.selectedVideo }/>
         <VideoList
@@ -47,4 +49,4 @@ class App extends React.Component {
 
 ReactDOM.render(
   <App/>
-  , document.querySelector('.container'));
+  , document.getElementById('app'));

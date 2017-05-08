@@ -1,26 +1,51 @@
-module.exports = {
-  entry: [
-    './src/index.js'
+var webpack = require('webpack');
+var path = require('path');
+
+module.exports={
+  entry:[
+    'script!jquery/dist/jquery.min.js',
+    './app/app.js'
   ],
-  output: {
+  externals:{
+    jquery: 'jQuery'
+  },
+  plugins:[
+    new webpack.ProvidePlugin({
+      '$':'jquery',
+      'jQuery':'jquery'
+    })
+  ],
+  output:{
     path: __dirname,
-    publicPath: '/',
-    filename: 'bundle.js'
+    filename: './public/bundle.js'
   },
-  module: {
-    loaders: [{
-      exclude: /node_modules/,
-      loader: 'babel',
-      query: {
-        presets: ['react', 'es2015', 'stage-1']
+  resolve:{
+    root:__dirname,
+    alias:{
+      applicationStyles: 'app/styles/app.scss'
+    },
+    extensions: ['','.js','.jsx']
+  },
+  module:{
+    loaders:[
+      {
+        loader:'babel-loader',
+        query:{
+          presets: ['react','es2015','stage-0']
+        },
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components)/
+      },
+      {
+        test: /\.jpe?g$|\.gif$|\.png$/i,
+        loader: "url-loader?name=/app/styles/images/[name].[ext]"
       }
-    }]
+    ]
   },
-  resolve: {
-    extensions: ['', '.js', '.jsx']
+  sassLoader:{
+    includePaths:[
+      path.resolve(__dirname,'./node_modules/foundation-sites/scss')
+    ]
   },
-  devServer: {
-    historyApiFallback: true,
-    contentBase: './'
-  }
+  devtool:'cheap-module-eval-source-map'
 };
